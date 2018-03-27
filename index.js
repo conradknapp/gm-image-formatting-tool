@@ -43,9 +43,13 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", upload, async (req, res) => {
+  const width = req.body.width || 250;
+  const height = req.body.height || 250;
+  const factor = req.body.factor || 0;
+
   await gm(req.file.path)
-    .resize(240, 240)
-    .noProfile()
+    .resize(width, height)
+    .minify(factor)
     .write(`uploads/resized-${req.file.filename}`, err => {
       if (!err) console.log("done");
 
