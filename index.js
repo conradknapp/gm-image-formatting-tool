@@ -31,10 +31,6 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
   next();
 });
 
@@ -45,22 +41,16 @@ app.get("/", (req, res) => {
 app.post("/", upload, async (req, res) => {
   const width = req.body.width || 250;
   const height = req.body.height || 250;
-  const factor = req.body.factor || 0;
 
-  await gm(req.file.path)
-    .resize(width, height)
-    .minify(factor)
-    .write(`uploads/resized-${req.file.filename}`, err => {
-      if (!err) console.log("done");
-
-      res.json({ url: `uploads/resized-${req.file.filename}` });
+  const readStream = fs.createReadStream(req.file.path);
+  await gm(readStream)
+    .resizeExact(width, height)
+    .stream((err, stdout, stderr) => {
+      const writeStream = fs.createWriteStream(
+        `uploads/resized-${req.file.filename}`
+      );
+      stdout.pipe(res);
     });
-
-  /* Note: I previously rendered another pug file ('result') to output the modified img file, but took the above approach with using fetch and returning json to dynamically fill an empty img element */
-
-  // await res.render("result", {
-  //   resultImg: `uploads/resized-${req.file.filename}`
-  // });
 });
 
 app.listen(3000, () => console.log("Listening on 3000"));
