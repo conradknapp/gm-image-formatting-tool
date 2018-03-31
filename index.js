@@ -47,7 +47,7 @@ app.post("/", upload, async (req, res) => {
     .resizeExact(width, height)
     .stream((err, stdout, stderr) => {
       const writeStream = fs.createWriteStream(
-        `uploads/resized-${req.file.filename}`
+        `uploads/${Date.now()}-${req.file.filename}`
       );
       stdout.pipe(res);
     });

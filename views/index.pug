@@ -10,13 +10,14 @@ html(lang="en")
     .container
       form(action="/" method="POST" enctype="multipart/form-data")
         label Choose image width (default: 250px)
-        input(name="width" placeholder="width" type="text")
+        input(name="width" placeholder="width" type="number" min="0" max="5000")
         label Choose image height (default: 250px)
-        input(name="height" placeholder="height" type="text")
-        input(name="fileImg" type="file")
+        input(name="height" placeholder="height" type="number" min="0" max="5000")
+        input(name="fileImg" type="file" accept="image/*" required)
         button Send
     .result
-      img.resultImg
-      a(download).download Download Image
+      img(class="resultImg")
+      p(class="resultImgSize")
+      a(class="download") Download Image
   scripts
     script(src="../public/main.js")
