@@ -42,15 +42,30 @@ app.post("/", upload, async (req, res) => {
   const width = req.body.width || 250;
   const height = req.body.height || 250;
 
+  const blur = req.body.blur;
+  const keepAspectRatio = req.body.keepAspectRatio;
+  const monochrome = req.body.monochrome;
+  const charcoal = req.body.charcoal;
+  const negative = req.body.negative;
+
   const readStream = fs.createReadStream(req.file.path);
-  await gm(readStream)
-    .resizeExact(width, height)
-    .stream((err, stdout, stderr) => {
-      const writeStream = fs.createWriteStream(
-        `uploads/${Date.now()}-${req.file.filename}`
-      );
-      stdout.pipe(res);
-    });
+
+  const image = await gm(readStream);
+
+  keepAspectRatio
+    ? image.resize(width, height)
+    : image.resize(width, height, "!");
+  if (monochrome) await image.monochrome();
+  if (charcoal) await image.charcoal(1);
+  if (blur) await image.blur(0, blur);
+  if (negative) await image.negative();
+
+  await image.stream((err, stdout, stderr) => {
+    const writeStream = fs.createWriteStream(
+      `uploads/${Date.now()}-${req.file.filename}`
+    );
+    stdout.pipe(res);
+  });
 });
 
 app.listen(3000, () => console.log("Listening on 3000"));

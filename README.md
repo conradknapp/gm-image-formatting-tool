@@ -18,12 +18,7 @@ Here are some of the resources I've found useful in my development process:
 
 I also found this helpful definition of blob urls on [Stack Overflow](https://stackoverflow.com/questions/14952052/convert-blob-url-to-normal-url/16179887#16179887):
 
-```
-A URL that was created from a JavaScript Blob can not be converted to a "normal" URL.
-
-A blob: URL does not refer to data the exists on the server, it refers to data that your browser currently has in memory, for the current page. It will not be available on other pages, it will not be available in other browsers, and it will not be available from other computers.
-
-Therefore it does not make sense, in general, to convert a Blob URL to a "normal" URL. If you wanted an ordinary URL, you would have to send the data from the browser to a server and have the server make it available like an ordinary file.
-
-It is possible convert a blob: URL into a data: URL, at least in Chrome. You can use an AJAX request to "fetch" the data from the blob: URL (even though it's really just pulling it out of your browser's memory, not making an HTTP request).
-```
+> A URL that was created from a JavaScript Blob can not be converted to a "normal" URL.
+> A blob: URL does not refer to data the exists on the server, it refers to data that your browser currently has in memory, for the current page. It will not be available on other pages, it will not be available in other browsers, and it will not be available from other computers.
+> Therefore it does not make sense, in general, to convert a Blob URL to a "normal" URL. If you wanted an ordinary URL, you would have to send the data from the browser to a server and have the server make it available like an ordinary file.
+> It is possible convert a blob: URL into a data: URL, at least in Chrome. You can use an AJAX request to "fetch" the data from the blob: URL (even though it's really just pulling it out of your browser's memory, not making an HTTP request).
